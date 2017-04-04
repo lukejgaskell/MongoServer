@@ -11,8 +11,11 @@ var connection_string = 'mongodb://localhost/mongoserver';
 
 mongoose.connect(connection_string);
 
-var MongoServer = require('./MongoServer');
-MongoServer.init(app, mongoose, './models');
+var path = require('path');
+var modelsDir = path.resolve(__dirname + '/models');
+
+var MongoServer = require('./mongo-server');
+MongoServer.init(app, mongoose, modelsDir);
 
 app.listen(server_port, server_ipaddress, function () {
     console.log('MongoServer listening on port ' + server_port + '!');
