@@ -1,8 +1,8 @@
 {
-  "name": "mongoserver",
+  "name": "mongo-server",
   "version": "1.0.0",
   "description": "",
-  "main": "app.js",
+  "main": "mongo-server.js",
   "scripts": {
     "start": "node testFile.js",
     "test": "echo \"Error: no test specified\" && exit 1"
