@@ -1,55 +1,32 @@
 
+class Repository {
+    constructor(name, model) {
+        this.name = name;
+        this.model = model;
+    }
+    async getAll(filters) {
+        return await this.model.find(filters);
+    }
 
-var Repository = function (name, model) {
-    this.name = name;
-    this.model = model;
-};
+    async get(id) {
+        return await this.model.find({ _id: id });
+    }
 
-Repository.prototype.getAll = function (filters, cb) {
-    this.model.find(filters, function (err, items) {
-        if (err) {
-            return cb(err);
-        }
-        return cb(null, items);
-    });
-};
+    async remove(id) {
+        return await this.model.findOneAndRemove({ _id: id });
+    }
 
-Repository.prototype.get = function (id, cb) {
-    this.model.find({ _id: id }, function (err, item) {
-        if (err) {
-            return cb(err);
-        }
-        return cb(null, item);
-    });
-};
+    async add(record) {
+        var newRecord = new this.model();
+        Object.keys(record).forEach(function (key) {
+            newRecord[key] = record[key];
+        });
+        return await newRecord.save();
+    }
 
-Repository.prototype.remove = function (id, cb) {
-    this.model.findOneAndRemove({ _id: id }, function (err) {
-        if (err) {
-            return cb(err);
-        }
-        return cb(null, true);
-    });
-};
-
-Repository.prototype.add = function (record, cb) {
-    var newRecord = new this.model();
-    Object.keys(record).forEach(function (key) {
-        newRecord[key] = record[key];
-    });
-    newRecord.save(function (err, doc) {
-        if (err) {
-            return cb(err);
-        }
-        return cb(null, doc);
-    });
-};
-
-Repository.prototype.update = function (id, record, cb) {
-    this.model.findOneAndUpdate({ _id: id }, record, { upsert: true }, function (err, doc) {
-        if (err) return cb(err);
-        return cb(null, true);
-    });
-};
+    async update(id, record) {
+        return await this.model.findOneAndUpdate({ _id: id }, record, { upsert: true });
+    }
+}
 
 module.exports = Repository;
