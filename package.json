@@ -4,7 +4,7 @@
   "description": "",
   "main": "mongo-server.js",
   "scripts": {
-    "start": "node testFile.js",
+    "start": "node localTest/testFile.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Luke Gaskell",
