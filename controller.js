@@ -13,7 +13,7 @@ var Controller = function(name, repository, app) {
 
 Controller.prototype.getAll = function() {
     this.app.get('/api/'+ this.name, function(req, res) {
-        this.repository.getAll(function(err, records) {
+        this.repository.getAll(req.query, function(err, records) {
             if (err) {
                 return res.sendStatus(500);
             }
@@ -68,8 +68,8 @@ Controller.prototype.add = function() {
 };
 
 Controller.prototype.update = function() {
-    this.app.post('/api/'+ this.name + '/:id', function(req, res) {
-        this.repository.update(req.body, function(err, record) {
+    this.app.put('/api/'+ this.name + '/:id', function(req, res) {
+        this.repository.update(req.params.id, req.body, function(err, record) {
             if (err) {
                 return res.sendStatus(500);
             }

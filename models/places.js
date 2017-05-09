@@ -1,15 +1,58 @@
 var mongoose = require("mongoose");
 
-var exchanges = require('./exchanges');
-var rates = require('./rates');
-
 var PlaceSchema = new mongoose.Schema({
-    placeId: { type: String, required: true },
-    exchanges: [ exchanges.schema ],
-    rates: [ rates.schema ]
+    _id: { type: String, required: true, auto: false },
+    exchanges: [new mongoose.Schema({
+        originalCurrency: {
+            currency: {
+                type: String,
+                required: true
+            },
+            amount: {
+                type: Number,
+                required: true
+            }
+        },
+        newCurrency: {
+            currency: {
+                type: String,
+                required: true
+            },
+            amount: {
+                type: Number,
+                required: true
+            }
+        }
+    }, {
+            timestamps: true
+        })],
+    rates: [new mongoose.Schema({
+        originalCurrency: {
+            currency: {
+                type: String,
+                required: true
+            },
+            amount: {
+                type: Number,
+                required: true
+            }
+        },
+        newCurrency: {
+            currency: {
+                type: String,
+                required: true
+            },
+            amount: {
+                type: Number,
+                required: true
+            }
+        }
+    }, {
+            timestamps: true
+        })]
 }, {
-    timestamps: true
-});
+        timestamps: true
+    });
 
 var place = mongoose.model('Place', PlaceSchema);
 

@@ -5,8 +5,8 @@ var Repository = function (name, model) {
     this.model = model;
 };
 
-Repository.prototype.getAll = function (cb) {
-    this.model.find({}, function (err, items) {
+Repository.prototype.getAll = function (filters, cb) {
+    this.model.find(filters, function (err, items) {
         if (err) {
             return cb(err);
         }
@@ -45,21 +45,10 @@ Repository.prototype.add = function (record, cb) {
     });
 };
 
-Repository.prototype.update = function (record, cb) {
-    this.model.find({ _id: id }, function (err, item) {
-        if (err) {
-            return cb(err);
-        }
-        var newRecord = new this.model();
-        Object.keys(record).forEach(function (key) {
-            newRecord[key] = record[key];
-        });
-        newRecord.save(function (err, doc) {
-            if (err) {
-                return cb(err);
-            }
-            return cb(null, doc);
-        });
+Repository.prototype.update = function (id, record, cb) {
+    this.model.findOneAndUpdate({ _id: id }, record, { upsert: true }, function (err, doc) {
+        if (err) return cb(err);
+        return cb(null, true);
     });
 };
 
